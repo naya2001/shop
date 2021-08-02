@@ -1,0 +1,16 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block title %} delete category {% endblock title %}
+
+{% block content %}
+<p> Delete "{{item}}?"</p>
+<form action="{% url 'delete_category' item.id %}" method="post">
+    {% csrf_token %}
+
+    <a href="{% url 'show_categories' %}">Cancel </a>
+    <input type="submit" name="Confirm">
+
+</form>
+
+{% endblock content %}

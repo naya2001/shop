@@ -1,0 +1,28 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block title %} show products {% endblock title %}
+
+{% block content %}
+<p>Categories</p>
+
+<table border="1px">
+
+
+    {% for product in products %}
+
+    <tr>
+        <td>{{product.product_title}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.description}}</td>
+        <td><img width='100px' src="{{product.image.url}}"></td>
+        <td>{{product.category}}</td>
+        <td><a href="{% url 'update_product' product.id %}">Update</a></td>
+        <td><a href="{% url 'delete_product' product.id %}">Delete</a></td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock content %}
