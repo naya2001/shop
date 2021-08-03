@@ -1,0 +1,31 @@
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static 'css/product_card.css' %}" type="text/css" media="screen">
+
+<table border="0px">
+
+    {% for product in products %}
+    {% if forloop.counter|divisibleby:"5" %}
+    <tr></tr>
+    {% endif %}
+
+    <td>
+<div class="product-wrap">
+  <div class="product-item">
+    <img src="{{product.image.url}}">
+
+    <div class="product-buttons">
+      <a href="" class="button">В корзину</a>
+    </div>
+  </div>
+  <div class="product-title">
+    <a href=""> {{product.product_title}}</a>
+    <span class="product-price"> {{product.price}}</span>
+  </div>
+</div>
+    </td>
+
+    {% endfor %}
+
+</table>

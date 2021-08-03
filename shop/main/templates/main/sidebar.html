@@ -1,0 +1,9 @@
+{% load static %}
+
+{% for category in categories %}
+    <p>
+    <a href="{% url 'category_product_list' category.id %}"> {{category.category_title}} </a>
+    </p>
+{% endfor %}
+
+

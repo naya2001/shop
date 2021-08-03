@@ -1,0 +1,13 @@
+{% extends 'main/base.html'%}
+{% load static %}
+{% block title %} {{category.id}} {% endblock title %}
+{% block content %}
+
+
+        {% for product in category.product_set.all %}
+            {{ product.product_title }}
+            {{ product.price }}
+        {% endfor %}
+
+        
+{% endblock content %}

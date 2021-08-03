@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Store</title>
+    <link rel="stylesheet" href="{% static 'css/ex.css' %}" type="text/css" media="screen">
+</head>
+
+<body>
+  <div id="header"><h1>Store</h1></div>
+
+  <div id="sidebar">
+    {% include 'main/sidebar.html' %}
+  </div>
+
+  <div id="content">
+
+{% include 'main/product_card.html' %}
+  </div>
+
+  <div id="footer">---</div>
+
+ </body>
+</html>
