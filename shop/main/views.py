@@ -1,15 +1,53 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 
 from .forms import CreateUserForm, CategoryForm, ProductsForm
 from .models import Category, Product
 
-from django.contrib.auth.forms import UserCreationForm
-
 
 def index(request):
     return render(request, 'main/index.html')
+
+
+def ex(request):
+    products = Product.objects.all()
+    context = {'products': products}
+
+    categories = Category.objects.all()
+
+    context = {'products': products,
+        'categories': categories,
+    }
+    return render(request, 'main/ex.html', context)
+
+
+def store(request):
+    categories = Category.objects.all()
+
+    context = {
+        'categories': categories,
+    }
+    return render(request, 'main/store.html', context)
+
+
+def category_product_list(request, pk):
+
+    category = Category.objects.get(id=pk)
+
+    context = {'category': category}
+
+    return render(request, 'main/category_product_list.html', context)
+
+
+def category_product_list_to_sidebar(request):
+
+    categories = Category.objects.all()
+
+    context = {'categories': categories}
+
+    return render(request, 'main/sidebar.html', context)
 
 
 def register_page(request):
