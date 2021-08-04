@@ -8,19 +8,14 @@ from .models import Category, Product
 
 
 def index(request):
-    return render(request, 'main/index.html')
-
-
-def ex(request):
     products = Product.objects.all()
-    context = {'products': products}
 
     categories = Category.objects.all()
 
     context = {'products': products,
-        'categories': categories,
-    }
-    return render(request, 'main/ex.html', context)
+               'categories': categories,
+               }
+    return render(request, 'main/index.html', context)
 
 
 def store(request):
@@ -36,18 +31,13 @@ def category_product_list(request, pk):
 
     category = Category.objects.get(id=pk)
 
-    context = {'category': category}
-
-    return render(request, 'main/category_product_list.html', context)
-
-
-def category_product_list_to_sidebar(request):
-
     categories = Category.objects.all()
 
-    context = {'categories': categories}
+    context = {'category': category,
+               'categories': categories
+               }
 
-    return render(request, 'main/sidebar.html', context)
+    return render(request, 'main/category_product_list.html', context)
 
 
 def register_page(request):

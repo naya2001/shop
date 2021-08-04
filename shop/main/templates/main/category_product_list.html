@@ -1,13 +1,36 @@
 {% extends 'main/base.html'%}
 {% load static %}
-{% block title %} {{category.id}} {% endblock title %}
+
+{% block title %} {{category}} {% endblock %}
+{% block header %} {% include 'main/header_bar.html' %}{% endblock %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/product_card.css' %}" type="text/css" media="screen">
 
+<table border="0px">
+    {% for product in category.product_set.all %}
+    {% if forloop.counter|divisibleby:"5" %}
+    <tr></tr>
+    {% endif %}
 
-        {% for product in category.product_set.all %}
-            {{ product.product_title }}
-            {{ product.price }}
-        {% endfor %}
+    <td>
+<div class="product-wrap">
+  <div class="product-item">
+    <img src="{{product.image.url}}">
 
-        
-{% endblock content %}
+    <div class="product-buttons">
+      <a href="" class="button">В корзину</a>
+    </div>
+  </div>
+
+  <div class="product-title">
+    <a href=""> {{product.product_title}}</a>
+    <span class="product-price"> {{product.price}}</span>
+  </div>
+</div>
+    </td>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

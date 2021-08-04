@@ -3,12 +3,30 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<title>{% block title %} {% endblock title %}</title>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css" media="screen">
+
+     <style>
+     body{
+     background-image: url( "{% static 'background.png' %}");
+     }
+</style>
 </head>
 
 <body>
-{% block content %} {% endblock content %}
+  <div id="header"> {% block header %} {% endblock %} </div>
 
-</body>
+  <div id="sidebar">
+
+    {% include 'main/sidebar.html' %}
+  </div>
+
+  <div id="content">
+ {% block content %} {% endblock %}
+  </div>
+
+  <div id="footer">Store</div>
+
+ </body>
 </html>
