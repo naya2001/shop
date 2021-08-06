@@ -15,7 +15,20 @@ def index(request):
     context = {'products': products,
                'categories': categories,
                }
+
     return render(request, 'main/index.html', context)
+
+
+def product_detail(request, pk):
+    product = Product.objects.get(id=pk)
+
+    categories = Category.objects.all()
+
+    context = {'product': product,
+               'categories': categories,
+               }
+
+    return render(request, 'main/product_detail.html', context)
 
 
 def store(request):

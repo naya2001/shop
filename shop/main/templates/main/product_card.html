@@ -19,12 +19,14 @@
   </div>
 
   <div class="product-title">
-    <a href=""> {{product.product_title}}</a>
+    <a href="{% url 'product_detail' product.id %}"> {{product.product_title}}</a>
     <span class="product-price"> {{product.price}}</span>
   </div>
 </div>
     </td>
-
+    {% empty %}
+    <p> В данной категории нет товаров. </p>
     {% endfor %}
+
 
 </table>
