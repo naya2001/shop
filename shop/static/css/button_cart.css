@@ -7,14 +7,14 @@
     text-transform: uppercase;
     padding: 12px 20px;
     font-family: 'Montserrat', sans-serif;
-    color: #904C6E;
+    color: #c0a97a;
     background: white;
-    border: 1px solid;
+    border: 1px solid black;
     cursor: pointer;
     transition: .3s linear;
 }
 .button-3:hover {
-    background: #F0C7A7;
+    background: #FFFFF0;
 }
 .button-3:after {
     content: "\e82e";
@@ -30,5 +30,5 @@
     font-size: 16px;
     margin-left: 30px;
     padding-left: 20px;
-    border-left: 1px solid;
+    border-left: 1px solid black;
 }
