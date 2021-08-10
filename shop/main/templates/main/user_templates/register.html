@@ -1,35 +1,35 @@
-{% extends 'main/base.html'%}
 {% load static %}
-
-{% block title %} - {% endblock title %}
-
-{% block content %}
-
-<form method="post" action="">
+<style>
+     body{
+     background-image: url( "{% static 'background.png' %}");
+     }
+</style>
+<link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css" media="screen">
+<form method="post" action="" class="ui-form">
     {% csrf_token %}
 
-    {{form.username.label}}
-    {{form.username}}
+     <h3>Регистрация</h3>
+    <div class="form-row">
+        <input type="text" name="username" id="username" > <label for="username">Логин</label>
+    </div>
 
-    <br>
+    <div class="form-row">
+        <input type="text" name="email" id="email" > <label for="username">email</label>
+    </div>
 
-    {{form.email.label}}
-    {{form.email}}
+    <div class="form-row">
+        <input type="password" name="password1" id="password1" > <label for="username">Пароль</label>
+    </div>
 
-    <br>
-    {{form.password1.label}}
-    {{form.password1}}
+    <div class="form-row">
+        <input type="password" name="password2" id="password2" > <label for="username">Подтвердите пароль</label>
+    </div>
 
-    <br>
-    {{form.password2.label}}
-    {{form.password2}}
+    <input type="submit" name="Create User" value="Регистрация">
 
-    <br>
-    <a href="{% url 'login_page' %}">login</a>
+    <p> Уже зарегистрированы? <a href="{% url 'login_page' %}">Войти</a>
+    </p>
 
-    {{form.errors}}
-
-    <input type="submit" name="Create User">
+     {{form.errors}}
 </form>
 
-{% endblock content %}
