@@ -1,19 +1,26 @@
-{% extends 'main/base.html'%}
 {% load static %}
 
-{% block title %} login {% endblock title %}
+<style>
+     body{
+     background-image: url( "{% static 'background.png' %}");
+     }
+</style>
+<link rel="stylesheet" href="{% static 'css/login_register.css' %}" type="text/css" media="screen">
 
-{% block content %}
-
-<form method="post" action="">
+<form method="post" action="" class="ui-form">
     {% csrf_token %}
-    <input type="text" name="username" placeholder="Username..." >
-    <input type="password" name="password" placeholder="Password..."  >
+    <h3>Войти</h3>
+    <div class="form-row">
+        <input type="text" name="username" id="username" > <label for="username">Логин</label>
+    </div>
 
-    <input type="submit" value="Login">
+    <div class="form-row">
+        <input type="password" name="password" id="password" ><label for="password">Пароль</label>
+    </div>
 
-    <p> Don't have an account? <a href="{% url 'register_page' %}" >Sign Up</a>
-</p>
+    <p><input type="submit" value="Войти"></p>
+    <br>
+    <p> Не зарегистрированы? <a href="{% url 'register_page' %}" >Регистрация</a>
+    </p>
 </form>
 
-{% endblock content %}
