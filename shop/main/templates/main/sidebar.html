@@ -2,11 +2,11 @@
 <link rel="stylesheet" href="{% static 'css/sidebar.css' %}" type="text/css" media="screen">
 <div class="widget">
   <h3 class="widget-title">Категории</h3>
+
 {% for category in categories %}
 
   <ul class="widget-list">
     <li><a href="{% url 'category_product_list' category.id %}"> {{category.category_title}} </a></li>
-
   </ul>
 
 {% endfor %}
