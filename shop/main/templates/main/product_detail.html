@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block title %} {{product.product_title}} {% endblock  %}
+{% block title %} {{product.product_title}} {% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
@@ -26,9 +26,9 @@
 <div class="row">
   <div class="column">
     <ul class="bxslider">
-  <li><img src="{{product.image.url}}" /></li>
-  <li><img src="{{product.image.url}}" /></li>
-
+        {% for img in product.image.all %}
+        <li><img src="{{img.image.url}}"/></li>
+        {% endfor %}
 </ul>
   </div>
 
