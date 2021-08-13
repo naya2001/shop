@@ -9,12 +9,20 @@ class Category(models.Model):
         return self.category_title
 
 
+class Image(models.Model):
+    image = models.ImageField(upload_to='images/')
+    product_title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.product_title
+
+
 class Product(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     product_title = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
-    image = models.ImageField(upload_to='images/')
+
+    image = models.ManyToManyField(Image)
 
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
 
@@ -23,7 +31,8 @@ class Product(models.Model):
 
 
 class Customer(models.Model):
-    username = models.CharField(max_length=50)
+    user = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
+
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     phone = models.CharField(max_length=13)
@@ -55,13 +64,12 @@ class Status(models.Model):
 
 class Order(models.Model):
     order_status = models.ForeignKey(Status, on_delete=models.CASCADE)
-    order_number = models.IntegerField(default=0)
 
     data = models.DateTimeField(auto_now_add=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.order_number)
+        return str(self.pk)
 
 
 
