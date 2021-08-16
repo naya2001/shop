@@ -6,7 +6,7 @@
 {% for category in categories %}
 
   <ul class="widget-list">
-    <li><a href="{% url 'category_product_list' category.id %}"> {{category.category_title}} </a></li>
+    <li><a href="{% url 'category_product_list' category.slug %}"> {{category.category_title}} </a></li>
   </ul>
 
 {% endfor %}

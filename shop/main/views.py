@@ -19,8 +19,9 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-def product_detail(request, pk):
-    product = Product.objects.get(id=pk)
+def product_detail(request, slug):
+   # product = Product.objects.get(id=pk)
+    product = get_object_or_404(Product, slug=slug)
 
     categories = Category.objects.all()
 
@@ -31,18 +32,10 @@ def product_detail(request, pk):
     return render(request, 'main/product_detail.html', context)
 
 
-def store(request):
-    categories = Category.objects.all()
+def category_product_list(request, slug):
+    category = get_object_or_404(Category, slug=slug)
 
-    context = {
-        'categories': categories,
-    }
-    return render(request, 'main/store.html', context)
-
-
-def category_product_list(request, pk):
-
-    category = Category.objects.get(id=pk)
+    #category = Category.objects.get(id=pk)
 
     categories = Category.objects.all()
 
@@ -93,99 +86,5 @@ def logout_page(request):
     return redirect('login_page')
 
 
-def show_categories(request):
-    categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, 'main/category_templates/show_categories.html', context)
-
-
-def add_category(request):
-
-    form = CategoryForm(request.POST)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-
-    context = {'form': form}
-
-    return render(request, 'main/category_templates/category_form.html', context)
-
-
-def update_category(request, pk):
-
-    category = Category.objects.get(id=pk)
-    form = CategoryForm(instance=category)
-
-    if request.method == 'POST':
-        form = CategoryForm(request.POST, instance=category)
-        if form.is_valid():
-            form.save()
-            return redirect('show_categories')
-
-    context = {'form': form}
-
-    return render(request, 'main/category_templates/category_form.html', context)
-
-
-def delete_category(request, pk):
-
-    category = Category.objects.get(id=pk)
-    if request.method == 'POST':
-        category.delete()
-        return redirect('show_categories')
-
-    context = {'item': category}
-
-    return render(request, 'main/category_templates/category_delete_form.html', context)
-
-
-def show_products(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'main/product_templates/show_products.html', context)
-
-
-def add_product(request):
-
-    form = ProductsForm(request.POST)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-
-    context = {'form': form}
-
-    return render(request, 'main/product_templates/product_form.html', context)
-
-
-def update_product(request, pk):
-
-    product = Product.objects.get(id=pk)
-    form = ProductsForm(instance=product)
-
-    if request.method == 'POST':
-        form = ProductsForm(request.POST, request.FILES, instance=product)
-        if form.is_valid():
-            form.save()
-            return redirect('show_products')
-
-    context = {'form': form}
-
-    return render(request, 'main/product_templates/product_form.html', context)
-
-
-def delete_product(request, pk):
-
-    product = Product.objects.get(id=pk)
-    if request.method == 'POST':
-        product.delete()
-        return redirect('show_products')
-
-    context = {'item': product}
-
-    return render(request, 'main/product_templates/product_delete_form.html', context)
 
 
