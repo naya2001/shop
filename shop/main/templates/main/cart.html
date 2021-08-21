@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title> Корзина </title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css" media="screen">
+    <link rel="stylesheet" href="{% static 'css/cart_table.css' %}" type="text/css" media="screen">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap" rel="stylesheet">
+    <style>
+     body{
+     background-image: url( "{% static 'background.jpg' %}");
+     }
+    </style>
+</head>
+
+<body>
+  <div id="header">
+      {% include 'main/top_menu.html' %}
+  </div>
+
+  <div id="content" style="background-color: white; margin: 10px 10% 10px 10%;">
+
+<table align="center">
+          <tr>
+              <th colspan="2">Товар</th>
+              <th>Цена</th>
+              <th>Количество</th>
+              <th>Итого</th>
+          </tr>
+          <tr>
+     {% for item in items %}
+              <td><img src="{{item.product.image.first.image.url}}"></td>
+              <td>{{item.product.product_title}}</td>
+              <td>{{item.product.price}}</td>
+              <td>{{item.amount}}</td>
+              <td>{{item.total_price}}</td>
+          </tr>
+     {% endfor %}
+
+        <tr>
+            <td style="border:0"></td>
+            <td style="border:0"></td>
+            <td style="border:0"></td>
+
+            <td style="border:0">Сумма к оплате: {{order.cart_total}} </td>
+            <td style="border:0">
+            <button class="button-3">Оформить заказ </button></td>
+        </tr>
+     </table>
+  </div>
+
+  <div id="footer">Store</div>
+
+ </body>
+</html>
+
+
+

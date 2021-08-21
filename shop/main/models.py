@@ -1,12 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.urls import reverse
 
 
 class Category(models.Model):
     category_title = models.CharField(max_length=50)
     slug = models.SlugField(null=True)
-
 
     def __str__(self):
         return self.category_title
@@ -27,7 +25,6 @@ class Product(models.Model):
     slug = models.SlugField(null=True)
 
     image = models.ManyToManyField(Image)
-
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -46,19 +43,6 @@ class Customer(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class CartElement(models.Model):
-    cart_product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    amount = models.IntegerField(default=1)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.cart_product.__str__()
-
-
-class Cart(models.Model):
-    cart_element = models.ManyToManyField(CartElement)
-
-
 class Status(models.Model):
     status_title = models.CharField(max_length=50)
 
@@ -68,12 +52,28 @@ class Status(models.Model):
 
 class Order(models.Model):
     order_status = models.ForeignKey(Status, on_delete=models.CASCADE)
-
-    data = models.DateTimeField(auto_now_add=True)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.pk)
 
+    @property
+    def cart_total(self):
 
+        orderitems = self.orderitem_set.all()
+        total = sum([item.total_price for item in orderitems])
+        return total
+
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+
+    amount = models.IntegerField(default=1)
+
+    @property
+    def total_price(self):
+        total = self.product.price * self.amount
+        return total
 

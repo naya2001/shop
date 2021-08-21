@@ -3,11 +3,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 
-from .forms import CreateUserForm, CategoryForm, ProductsForm
-from .models import Category, Product
+from .forms import CreateUserForm
+from .models import *
 
 
-def index(request):
+def index(request):  # main page
     products = Product.objects.all()
 
     categories = Category.objects.all()
@@ -19,7 +19,7 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-def product_detail(request, slug):
+def product_detail(request, slug):  # shows details about chosen product
    # product = Product.objects.get(id=pk)
     product = get_object_or_404(Product, slug=slug)
 
@@ -32,7 +32,7 @@ def product_detail(request, slug):
     return render(request, 'main/product_detail.html', context)
 
 
-def category_product_list(request, slug):
+def category_product_list(request, slug):  # shows products by category
     category = get_object_or_404(Category, slug=slug)
 
     #category = Category.objects.get(id=pk)
@@ -86,5 +86,18 @@ def logout_page(request):
     return redirect('login_page')
 
 
+def cart(request):
+    try:
+        if request.user.is_authenticated:
+            customer = request.user.customer
+            order = Order.objects.get(customer=customer)
+            items = order.orderitem_set.all()
+    except Exception:
+        items = []
+        order = {'cart_total': 0, 'total_price': 0}
+
+    context = {'items': items, 'order': order}
+
+    return render(request, 'main/cart.html', context)
 
 

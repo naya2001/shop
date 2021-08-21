@@ -1,10 +1,13 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/top_menu.css' %}" type="text/css" media="screen">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap" rel="stylesheet">
 
 <ul class="menu-main">
   <li><a href="{% url 'home' %}">Главная</a></li>
   <li><a href="{% url 'home' %}">О нас</a></li>
   <li><a href="{% url 'home' %}">Контакты</a></li>
   <li><a href="{% url 'home' %}">Профиль</a></li>
-  <li><a href="{% url 'home' %}">Корзина</a></li>
+  <li><a href="{% url 'cart' %}">Корзина</a></li>
 </ul>
