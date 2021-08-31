@@ -1,6 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+import json
+
+from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 
 from .forms import CreateUserForm
@@ -107,4 +111,26 @@ def checkout(request):
 
 def user_page(request):
     return render(request, 'main/user_page.html')
+
+@csrf_exempt
+def update_item(request):
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+
+    customer = request.user.customer
+    try:
+        if action == 'add':
+            product = Product.objects.get(id=productId)
+            order, created = Order.objects.get_or_create(customer=customer)
+
+            print(product)
+            print('order', order)
+            orderItem = OrderItem.objects.get_or_create(order=order, product=product)
+            print('orderItem', orderItem)
+           # orderItem.save()
+    except Exception as e:
+        print(e)
+
+    return JsonResponse('Item was added', safe=False)
 

@@ -43,15 +43,7 @@ class Customer(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class Status(models.Model):
-    status_title = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.status_title
-
-
 class Order(models.Model):
-    order_status = models.ForeignKey(Status, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
@@ -60,7 +52,6 @@ class Order(models.Model):
 
     @property
     def cart_total(self):
-
         orderitems = self.orderitem_set.all()
         total = sum([item.total_price for item in orderitems])
         return total
