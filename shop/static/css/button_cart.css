@@ -14,10 +14,9 @@
     transition: .3s linear;
 }
 .button-3:hover {
-    background: #FFFFF0;
+    background: black;
 }
 .button-3:after {
-    content: "\e82e";
     font-family: Linearicons-Free;
     speak: none;
     font-style: normal;

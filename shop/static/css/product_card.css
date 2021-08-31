@@ -44,7 +44,7 @@
    transition: .3s ease-in-out;
 }
 .button:before {
-   content: "\f07a";
+
    font-family: FontAwesome;
    margin-right: 10px;
 }

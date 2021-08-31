@@ -101,3 +101,10 @@ def cart(request):
     return render(request, 'main/cart.html', context)
 
 
+def checkout(request):
+    return render(request, 'main/checkout.html')
+
+
+def user_page(request):
+    return render(request, 'main/user_page.html')
+
