@@ -118,6 +118,8 @@ def update_item(request):
     productId = data['productId']
     action = data['action']
 
+    amount = data['amount']
+
     customer = request.user.customer
     try:
         if action == 'add':
@@ -126,7 +128,7 @@ def update_item(request):
 
             print(product)
             print('order', order)
-            orderItem = OrderItem.objects.get_or_create(order=order, product=product)
+            orderItem = OrderItem.objects.get_or_create(order=order, product=product, amount=amount)
             print('orderItem', orderItem)
            # orderItem.save()
     except Exception as e:

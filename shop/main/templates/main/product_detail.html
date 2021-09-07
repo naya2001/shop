@@ -10,6 +10,7 @@
 <script src="{% static 'bxSlider/jquery.bxslider.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/slider.css' %}" type="text/css" media="screen">
 
+
 <link rel="stylesheet" href="{% static 'css/product_detail.css' %}" type="text/css" media="screen">
 <link rel="stylesheet" href="{% static 'css/button_cart.css' %}" type="text/css" media="screen">
 
@@ -21,6 +22,28 @@
   prevText: ''
   });
 });</script>
+
+<!-- for changing amount of product -->
+<script>
+        $(document).ready(function() {
+            $('.minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('.plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+
+        });
+</script>
+
 
 
 <div class="row">
@@ -41,7 +64,19 @@
             <div class="post-meta">
                 <span class="product-price">{{product.price}} грн</span>
                 <br><br>
-                <button class="button-3">В корзину</button>
+
+                <span>Количество: </span>
+
+                <div class="number">
+                    <span class="minus button-3" style="padding: 4px;">-</span>
+                    <input class="amount-input-js" name="amount" type="text" value="1" size="5"/>
+                    <span class="plus button-3" style="padding: 4px;">+</span>
+                </div>
+
+                <br>
+                <button id="cart" data-product="{{product.id}}" data-action="add"
+
+                        class="button-3 update-cart">В корзину</button>
             </div>
         </div>
 
@@ -54,9 +89,6 @@
 </div>
   </div>
 </div>
-
-
-
 
 {% endblock %}
 
