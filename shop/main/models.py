@@ -34,13 +34,15 @@ class Product(models.Model):
 class Customer(models.Model):
     user = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
 
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    phone = models.CharField(max_length=13)
-    email = models.EmailField()
+    #first_name = models.CharField(max_length=30, null=True)
+    #last_name = models.CharField(max_length=30, null=True)
+    phone = models.CharField(max_length=13, null=True)
+    address = models.CharField(max_length=100, null=True)
+    #email = models.EmailField()
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.user.username
+        #return f"{self.first_name} {self.last_name}"
 
 
 class Order(models.Model):
