@@ -91,14 +91,16 @@ def logout_page(request):
 
 
 def cart(request):
-    try:
-        if request.user.is_authenticated:
-            customer = request.user.customer
-            order = Order.objects.get(customer=customer)
-            items = order.orderitem_set.all()
-    except Exception:
-        items = []
-        order = {'cart_total': 0, 'total_price': 0}
+    items = []
+    order = {'cart_total': 0, 'total_price': 0}  # if user's order is empty
+
+    if request.user.is_authenticated:
+        #customer = request.user.customer
+        customer, created = Customer.objects.get_or_create(user=request.user)  # creating customer as logged in user
+        print(customer, created)
+
+        order, created = Order.objects.get_or_create(customer=customer)
+        items = order.orderitem_set.all()
 
     context = {'items': items, 'order': order}
 
