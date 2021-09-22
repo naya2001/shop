@@ -1,0 +1,48 @@
+{% extends 'main/index.html'%}
+{% load static %}
+
+
+{% block title %} Личные данные {% endblock %}
+
+<style>
+     body{
+     background-image: url( "{% static 'background.jpg' %}");
+     }
+</style>
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/login_register.css' %}" type="text/css" media="screen">
+
+<form method="post" action="" class="ui-form" style="max-width: 60%; margin: 0px 10% 0px; padding: 10px 30px 30px;">
+    {% csrf_token %}
+
+    <h3 style="text-align: left;">Личные данные</h3>
+
+    <div class="form-row">
+        <input name="{{user_form.first_name.html_name }}" type="text"   id="first_name" value="{{user.first_name}}">
+        <label for="first_name">Имя</label>
+    </div>
+
+    <div class="form-row">
+        <input name="{{user_form.last_name.html_name }}" type="text"  id="last_name" value="{{user.last_name}}">
+        <label for="last_name">Фамилия</label>
+    </div>
+
+
+    <div class="form-row">
+        <input type="text" name="{{form.phone.html_name}}"  id="phone" value="{{user.customer.phone}}">
+        <label for="phone">Номер телефона</label>
+    </div>
+
+    <div class="form-row">
+        <input type="text"  name="{{form.address.html_name}}" id="address" value="{{user.customer.address}}">
+        <label for="address">Адрес доставки</label>
+    </div>
+
+    <p>
+        <input type="submit" style="width: 30%;" value="Сохранить">
+        <a style="float: right; font-size: 20px;" href="{% url 'logout_page' %}">Выйти</a>
+    </p>
+</form>
+
+{% endblock %}
