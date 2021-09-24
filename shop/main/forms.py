@@ -1,6 +1,6 @@
-from .models import Category, Product, Customer
+from .models import *
 
-from django.forms import ModelForm
+from django.forms import ModelForm, HiddenInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -22,6 +22,12 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name']
+
+
+class OrderForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ['is_complete']
 
 
 class CategoryForm(ModelForm):

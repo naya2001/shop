@@ -26,8 +26,6 @@ for (i = 0; i < updateButton.length; i++) {
 
 
 function updateUserOrder(productId, action, amount){
-	console.log('User is authenticated, sending data...')
-
 		var url = '/update_item/'
 
 		fetch(url, {
