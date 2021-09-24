@@ -23,6 +23,16 @@ def index(request):  # main page
     return render(request, 'main/index.html', context)
 
 
+def about_us(request):
+    context = {}
+    return render(request, 'main/about_us.html', context)
+
+
+def contacts(request):
+    context = {}
+    return render(request, 'main/contacts.html', context)
+
+
 def product_detail(request, slug):  # shows details about chosen product
    # product = Product.objects.get(id=pk)
     product = get_object_or_404(Product, slug=slug)
@@ -90,9 +100,11 @@ def logout_page(request):
     return redirect('login_page')
 
 
+'''
 def _get_form(request, formcls, prefix):
     data = request.POST if prefix in request.POST else None
     return formcls(data, prefix=prefix)
+'''
 
 
 def profile_page(request):
@@ -128,16 +140,35 @@ def profile_page(request):
 
 
 def cart(request):
+    form = OrderForm()
     items = []
     order = {'cart_total': 0, 'total_price': 0}  # if user's order is empty
 
     if request.user.is_authenticated:
         customer = Customer.objects.get_or_create(user=request.user)[0]  # creating customer as logged in user
 
-        order = Order.objects.get_or_create(customer=customer)[0]
+        if Order.objects.filter(customer=customer).exists():  # if orders exist, get last order
+            order = Order.objects.get(customer=customer).last()
+            if order.is_complete:  # if last order is completed? create new order
+                order = Order.objects.create(customer=customer)
+                print(order)
+        else:
+            order = Order.objects.get_or_create(customer=customer)[-1]  # else create new order
+            print(order)
+
         items = order.orderitem_set.all()
 
-    context = {'items': items, 'order': order}
+       # if Order.objects.filter(customer=customer, is_complete=True).exists():  # if
+        #    order = Order.objects.create(customer=customer)
+
+    if request.method == 'POST':
+            form = OrderForm(request.POST)
+            order = Order.objects.filter(customer=customer).update(is_complete=True)  # set True to complete order
+            return redirect('home')
+
+
+
+    context = {'form': form, 'items': items, 'order': order}
 
     return render(request, 'main/cart.html', context)
 
@@ -157,6 +188,10 @@ def update_item(request):
     customer = request.user.customer
 
     if action == 'add':
+
+        if not Customer.objects.filter(user=request.user).exists():  # if customer does not exist
+            customer = Customer.objects.get_or_create(user=request.user)
+
         product = Product.objects.get(id=productId)
         order = Order.objects.get_or_create(customer=customer)[0]
 
