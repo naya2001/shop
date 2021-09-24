@@ -48,6 +48,7 @@ class Customer(models.Model):
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
+    is_complete = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.pk)
@@ -57,6 +58,10 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([item.total_price for item in orderitems])
         return total
+
+    #def save(self, *args, **kwargs):
+     #   self.is_complete = True
+      #  super(Order, self).save(*args, **kwargs)
 
 
 class OrderItem(models.Model):
