@@ -11,7 +11,7 @@ from .forms import *
 from .models import *
 
 
-def index(request):  # main page
+def index(request):  # main page with all products
     products = Product.objects.all()
 
     categories = Category.objects.all()
@@ -23,18 +23,17 @@ def index(request):  # main page
     return render(request, 'main/index.html', context)
 
 
-def about_us(request):
+def about_us(request):  # page about store
     context = {}
     return render(request, 'main/about_us.html', context)
 
 
-def contacts(request):
+def contacts(request):  # page with contacts
     context = {}
     return render(request, 'main/contacts.html', context)
 
 
 def product_detail(request, slug):  # shows details about chosen product
-   # product = Product.objects.get(id=pk)
     product = get_object_or_404(Product, slug=slug)
 
     categories = Category.objects.all()
@@ -48,8 +47,6 @@ def product_detail(request, slug):  # shows details about chosen product
 
 def category_product_list(request, slug):  # shows products by category
     category = get_object_or_404(Category, slug=slug)
-
-    #category = Category.objects.get(id=pk)
 
     categories = Category.objects.all()
 
@@ -68,7 +65,7 @@ def register_page(request):
 
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('login_page')
 
     context = {'form': form}
     return render(request, 'main/user_templates/register.html', context)
@@ -107,7 +104,7 @@ def _get_form(request, formcls, prefix):
 '''
 
 
-def profile_page(request):
+def profile_page(request):  # page for updating information about customer: first+last names, phone, address
     categories = Category.objects.all()
 
     form = CustomerForm()
@@ -122,7 +119,7 @@ def profile_page(request):
             user_form = UserForm(request.POST, prefix='user_form')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
-
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if Customer.objects.filter(user=request.user).exists():
                 customer = Customer.objects.filter(user=request.user).update(address=address, phone=phone)
                 user = User.objects.filter(pk=request.user.pk).update(first_name=first_name, last_name=last_name)
@@ -139,31 +136,36 @@ def profile_page(request):
         return redirect('/login')
 
 
-def cart(request):
+def cart(request):  # shows products in cart. Cart page has button for confirming order
     form = OrderForm()
     items = []
     order = {'cart_total': 0, 'total_price': 0}  # if user's order is empty
 
     if request.user.is_authenticated:
-        customer = Customer.objects.get_or_create(user=request.user)[0]  # creating customer as logged in user
+        customer = Customer.objects.get_or_create(user=request.user)
 
-        if Order.objects.filter(customer=customer).exists():  # if orders exist, get last order
-            order = Order.objects.get(customer=customer).last()
-            if order.is_complete:  # if last order is completed? create new order
-                order = Order.objects.create(customer=customer)
-                print(order)
+        if Order.objects.filter(customer=request.user.pk).exists():  # if orders exist, get last order
+            order = Order.objects.filter(customer=request.user.customer).last()
+
+            if order.is_complete:  # if last order is completed, create new order
+                order = Order.objects.create(customer=request.user.customer)
+
+                items = order.orderitem_set.all()
+            else:
+                items = order.orderitem_set.all()
         else:
-            order = Order.objects.get_or_create(customer=customer)[-1]  # else create new order
-            print(order)
+            order = Order.objects.create(customer=request.user.customer)  # else create new order
 
-        items = order.orderitem_set.all()
+            items = order.orderitem_set.all()
+
 
        # if Order.objects.filter(customer=customer, is_complete=True).exists():  # if
         #    order = Order.objects.create(customer=customer)
 
     if request.method == 'POST':
             form = OrderForm(request.POST)
-            order = Order.objects.filter(customer=customer).update(is_complete=True)  # set True to complete order
+            order = Order.objects.filter(customer=request.user.customer).update(is_complete=True)
+            # set True to complete order
             return redirect('home')
 
 
@@ -178,7 +180,7 @@ def checkout(request):
 
 
 @csrf_exempt
-def update_item(request):
+def update_item(request):  # adds product to orderItem
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
@@ -193,11 +195,17 @@ def update_item(request):
             customer = Customer.objects.get_or_create(user=request.user)
 
         product = Product.objects.get(id=productId)
-        order = Order.objects.get_or_create(customer=customer)[0]
 
-        if OrderItem.objects.filter(order=order, product=product).exists():  # if the same orderItem exist
-            pass
+        if Order.objects.filter(customer=request.user.pk).exists():  # if orders exist, get last order
+            order = Order.objects.filter(customer=request.user.customer).last()
+
+            if order.is_complete:  # if last order is completed, create new order
+                order = Order.objects.create(customer=request.user.customer)
+
         else:
+            order = Order.objects.create(customer=request.user.customer)  # order isn't exist, create new
+
+        if not OrderItem.objects.filter(order=order, product=product).exists():  # if the same orderItem exist pass
             orderItem = OrderItem.objects.get_or_create(order=order, product=product, amount=amount)  # new orderItem
 
     return JsonResponse('Item was added', safe=False)
