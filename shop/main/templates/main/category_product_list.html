@@ -5,6 +5,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/product_card.css' %}" type="text/css" media="screen">
+<link rel="stylesheet" href="{% static 'css/button_cart.css' %}" type="text/css" media="screen">
 
 <table border="0px">
     {% for product in category.product_set.all %}
@@ -18,8 +19,13 @@
     <img src="{{product.image.first.image.url}}">
 
     <div class="product-buttons">
-      <button data-product="{{product.id}}" data-action="add" class="button-3 update-cart">В корзину</button>
+        <input type="hidden" class="amount-input-js" name="amount" type="text" value="1" size="5"/>
+        <button data-product="{{product.id}}" data-action="add" class="button-3 update-cart">
+            В корзину
+        </button>
     </div>
+
+
   </div>
 
   <div class="product-title">
