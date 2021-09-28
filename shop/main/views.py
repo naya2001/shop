@@ -97,13 +97,6 @@ def logout_page(request):
     return redirect('login_page')
 
 
-'''
-def _get_form(request, formcls, prefix):
-    data = request.POST if prefix in request.POST else None
-    return formcls(data, prefix=prefix)
-'''
-
-
 def profile_page(request):  # page for updating information about customer: first+last names, phone, address
     categories = Category.objects.all()
 
@@ -119,15 +112,12 @@ def profile_page(request):  # page for updating information about customer: firs
             user_form = UserForm(request.POST, prefix='user_form')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
             if Customer.objects.filter(user=request.user).exists():
                 customer = Customer.objects.filter(user=request.user).update(address=address, phone=phone)
                 user = User.objects.filter(pk=request.user.pk).update(first_name=first_name, last_name=last_name)
             else:
                 customer = Customer.objects.get_or_create(user=request.user, address=address, phone=phone)
-
-           # if form.is_valid() and user_form.is_valid():
-            #    form.save()
 
         context = {'form': form, 'user_form': user_form, 'categories': categories, 'user': request.user}
 
@@ -158,25 +148,19 @@ def cart(request):  # shows products in cart. Cart page has button for confirmin
 
             items = order.orderitem_set.all()
 
-
-       # if Order.objects.filter(customer=customer, is_complete=True).exists():  # if
-        #    order = Order.objects.create(customer=customer)
-
     if request.method == 'POST':
             form = OrderForm(request.POST)
             order = Order.objects.filter(customer=request.user.customer).update(is_complete=True)
             # set True to complete order
-            return redirect('home')
-
-
+            return redirect('order_is_confirmed')
 
     context = {'form': form, 'items': items, 'order': order}
 
     return render(request, 'main/cart.html', context)
 
 
-def checkout(request):
-    return render(request, 'main/checkout.html')
+def order_is_confirmed(request):  # shows message about confirmed order
+    return render(request, 'main/order_is_confirmed.html')
 
 
 @csrf_exempt

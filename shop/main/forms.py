@@ -29,7 +29,7 @@ class OrderForm(ModelForm):
         model = Order
         fields = ['is_complete']
 
-
+'''
 class CategoryForm(ModelForm):
     class Meta:
         model = Category
@@ -40,5 +40,5 @@ class ProductsForm(ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
-
+'''
 
