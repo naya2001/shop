@@ -134,7 +134,7 @@ def cart(request):  # shows products in cart. Cart page has button for confirmin
     if request.user.is_authenticated:
         customer = Customer.objects.get_or_create(user=request.user)
 
-        if Order.objects.filter(customer=request.user.pk).exists():  # if orders exist, get last order
+        if Order.objects.filter(customer=request.user.customer).exists():  # if orders exist, get last order
             order = Order.objects.filter(customer=request.user.customer).last()
 
             if order.is_complete:  # if last order is completed, create new order
@@ -180,7 +180,7 @@ def update_item(request):  # adds product to orderItem
 
         product = Product.objects.get(id=productId)
 
-        if Order.objects.filter(customer=request.user.pk).exists():  # if orders exist, get last order
+        if Order.objects.filter(customer=request.user.customer).exists():  # if orders exist, get last order
             order = Order.objects.filter(customer=request.user.customer).last()
 
             if order.is_complete:  # if last order is completed, create new order
