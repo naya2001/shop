@@ -150,8 +150,9 @@ def cart(request):  # shows products in cart. Cart page has button for confirmin
 
     if request.method == 'POST':
             form = OrderForm(request.POST)
-            order = Order.objects.filter(customer=request.user.customer).update(is_complete=True)
-            # set True to complete order
+            if order.orderitem_set.all().exists():
+                order = Order.objects.filter(customer=request.user.customer).update(is_complete=True)
+                # set True to complete order
             return redirect('order_is_confirmed')
 
     context = {'form': form, 'items': items, 'order': order}
@@ -160,7 +161,19 @@ def cart(request):  # shows products in cart. Cart page has button for confirmin
 
 
 def order_is_confirmed(request):  # shows message about confirmed order
-    return render(request, 'main/order_is_confirmed.html')
+    message = ""
+    if Order.objects.filter(customer=request.user.customer).exists():  # if orders exist, get last order
+        order = Order.objects.filter(customer=request.user.customer).last()
+
+        items = order.orderitem_set.all()
+        if items.exists():  # if last order is not empty, confirm
+            message = "Заказ принят"
+        else:
+            message = "Заказ пуст"
+
+    context = {'message': message}
+
+    return render(request, 'main/order_is_confirmed.html', context)
 
 
 @csrf_exempt

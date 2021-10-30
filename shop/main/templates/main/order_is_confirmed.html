@@ -4,7 +4,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title> Заказ принят </title>
+    <title> Статус заказа </title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css" media="screen">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
   </div>
 
   <div id="content" style="background-color: white; margin: 10px 10% 10px 10%;">
-      <p> Заказ принят в обработку. </p>
+      <p> {{message}}  </p>
  </div>
 
   <div id="footer">Store</div>
